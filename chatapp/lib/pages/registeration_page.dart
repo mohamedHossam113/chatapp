@@ -108,6 +108,7 @@ class _RegisterationPageState extends State<RegisterationPage> {
                                     context, 'An unexpected error occurred.');
                               }
                             } finally {
+                              //test
                               setState(() {
                                 isLoading = false;
                               });
