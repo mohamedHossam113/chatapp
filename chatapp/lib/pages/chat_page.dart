@@ -9,11 +9,13 @@ class Chatpage extends StatelessWidget {
   final CollectionReference messages =
       FirebaseFirestore.instance.collection('messages');
   final TextEditingController controller = TextEditingController();
+  final ScrollController _controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
+    String email = ModalRoute.of(context)!.settings.arguments as String;
     return StreamBuilder<QuerySnapshot>(
-      stream: messages.orderBy('createdAt').snapshots(),
+      stream: messages.orderBy('createdAt', descending: true).snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<MessageModel> messageList = [];
@@ -45,11 +47,15 @@ class Chatpage extends StatelessWidget {
               children: [
                 Expanded(
                   child: ListView.builder(
-                    itemCount: messageList.length,
-                    itemBuilder: (context, index) {
-                      return Chatbubble(message: messageList[index].messages);
-                    },
-                  ),
+                      reverse: true,
+                      controller: _controller,
+                      itemCount: messageList.length,
+                      itemBuilder: (context, index) {
+                        return messageList[index].id == email
+                            ? Chatbubble(message: messageList[index].messages)
+                            : ChatbubbleForFriend(
+                                message: messageList[index].messages);
+                      }),
                 ),
                 Align(
                   alignment: Alignment.centerLeft,
@@ -58,9 +64,15 @@ class Chatpage extends StatelessWidget {
                     child: TextField(
                       controller: controller,
                       onSubmitted: (data) {
-                        messages.add(
-                            {'messages': data, 'createdAt': DateTime.now()});
+                        messages.add({
+                          'messages': data,
+                          'createdAt': DateTime.now(),
+                          'id': email
+                        });
                         controller.clear();
+                        _controller.animateTo(0,
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.easeIn);
                       },
                       decoration: InputDecoration(
                         hintText: 'Send message',
@@ -79,7 +91,7 @@ class Chatpage extends StatelessWidget {
           );
         } else {
           return const Scaffold(
-            body: Center(child: Text('Loading...')),
+            body: Center(child: CircularProgressIndicator()),
           );
         }
       },

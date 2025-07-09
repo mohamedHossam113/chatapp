@@ -79,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 20),
                       MyButton(
-                        text: 'Sign Up',
+                        text: 'Sign In',
                         onTap: () async {
                           if (formKey.currentState!.validate()) {
                             setState(() {
@@ -98,7 +98,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
                               if (!mounted) return;
 
-                              Navigator.pushNamed(context, Chatpage.id);
+                              Navigator.pushNamed(context, Chatpage.id,
+                                  arguments: email);
                             } on FirebaseAuthException catch (_) {
                               if (!mounted) return;
 
@@ -130,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text(
-                            'Already have an account?',
+                            'Dont have an account?',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 15,
@@ -148,7 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               );
                             },
                             child: const Text(
-                              "   Sign In",
+                              "   Register",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 15,
