@@ -21,7 +21,7 @@ class Chatpage extends StatelessWidget {
           List<MessageModel> messageList = [];
           for (int i = 0; i < snapshot.data!.docs.length; i++) {
             var data = snapshot.data!.docs[i].data() as Map<String, dynamic>;
-            messageList.add(MessageModel.Fromjson(data));
+            messageList.add(MessageModel.fromjson(data));
           }
 
           return Scaffold(

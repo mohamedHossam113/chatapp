@@ -10,6 +10,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'registeration_page.dart';
 import 'custom_widget.dart';
 
+// ignore: must_be_immutable, use_key_in_widget_constructors
 class LoginPage extends StatelessWidget {
   String? email;
   String? password;
@@ -89,38 +90,19 @@ class LoginPage extends StatelessWidget {
                         const SizedBox(height: 20),
                         MyButton(
                           text: 'Sign In',
-                          onTap: () async {
+                          onTap: () {
                             if (formKey.currentState!.validate()) {
-                              final auth = FirebaseAuth.instance;
-
-                              try {
-                                await auth.signInWithEmailAndPassword(
-                                  email: email!,
-                                  password: password!,
-                                );
-
-                                await loginUser(); // optional user-specific logic
-
-                                Navigator.pushNamed(context, Chatpage.id,
-                                    arguments: email);
-                              } on FirebaseAuthException catch (_) {
-                                ;
-
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Invalid email or password'),
-                                    backgroundColor: Colors.red,
-                                  ),
-                                );
-                              } catch (_) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content:
-                                        Text('An unexpected error occurred'),
-                                    backgroundColor: Colors.red,
-                                  ),
-                                );
-                              } finally {}
+                              BlocProvider.of<LoginCubit>(context).loginUser(
+                                email: email!,
+                                password: password!,
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Please fill all fields'),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
                             }
                           },
                         ),
