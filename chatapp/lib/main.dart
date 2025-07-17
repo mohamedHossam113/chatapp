@@ -1,4 +1,5 @@
 import 'package:chatapp/pages/Chat_page.dart';
+import 'package:chatapp/pages/cubits/chat_cubit/chat_cubit.dart';
 import 'package:chatapp/pages/cubits/login_cubit/login_cubit.dart';
 import 'package:chatapp/pages/cubits/register_cubit/register_cubit.dart';
 import 'package:chatapp/pages/login_screen.dart';
@@ -29,12 +30,15 @@ class ScholarChat extends StatelessWidget {
         BlocProvider(
           create: (context) => RegisterCubit(),
         ),
+        BlocProvider(
+          create: (context) => ChatCubit(),
+        )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         routes: {
           LoginPage.id: (context) => LoginPage(),
-          RegisterationPage.id: (context) => const RegisterationPage(),
+          RegisterationPage.id: (context) => RegisterationPage(),
           Chatpage.id: (context) => Chatpage(),
         },
         initialRoute: LoginPage.id,
