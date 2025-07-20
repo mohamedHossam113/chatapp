@@ -1,8 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class MessageModel {
   final String messages;
   final String id;
-  MessageModel(this.messages, this.id);
-  factory MessageModel.fromjson(jsonData) {
-    return MessageModel(jsonData["messages"], jsonData['id']);
+
+  MessageModel({required this.messages, required this.id});
+
+  factory MessageModel.fromjson(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return MessageModel(messages: doc['message'], id: doc['id']);
   }
 }

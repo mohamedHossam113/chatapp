@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:chatapp/pages/Chat_page.dart';
+import 'package:chatapp/pages/cubits/chat_cubit/chat_cubit.dart';
 import 'package:chatapp/pages/cubits/login_cubit/login_cubit.dart';
 import 'package:chatapp/pages/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ class LoginPage extends StatelessWidget {
           isLoading = true;
         } else if (state is LoginSuccess) {
           isLoading = false;
+          BlocProvider.of<ChatCubit>(context).getmessages();
           Navigator.pushNamed(context, Chatpage.id, arguments: email);
         } else if (state is LoginFailure) {
           isLoading = false;

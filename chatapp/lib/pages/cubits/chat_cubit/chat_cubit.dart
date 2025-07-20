@@ -8,31 +8,34 @@ class ChatCubit extends Cubit<ChatState> {
   ChatCubit() : super(ChatInitial());
 
   CollectionReference messages =
-      FirebaseFirestore.instance.collection('messages');
+      FirebaseFirestore.instance.collection('message');
+
   List<MessageModel> messageList = [];
 
   void sendMessage({required String message, required String email}) {
     try {
       messages.add({
-        'messages': message,
+        'message': message,
         'createdAt': DateTime.now(),
         'id': email,
       });
     } catch (e) {
-      // You could emit an error state here if needed
+      // You can log or handle errors here
+      print("Send message error: $e");
     }
   }
 
-  void getMessage() {
+  void getmessages() {
     messages.orderBy('createdAt', descending: true).snapshots().listen((event) {
-      List<MessageModel> messageList = [];
-
+      // ✅ Correct list generation using .map()
+      // messageList =
+      //     event.docs.map((doc) => MessageModel.fromjson(doc)).toList();
+      messageList.clear();
       for (var doc in event.docs) {
-        messageList
-            .add(MessageModel.fromjson(doc.data() as Map<String, dynamic>));
+        messageList.add(MessageModel.fromjson(doc));
       }
-
-      emit(ChatSuccess(messageList: messageList));
+      print('Fetched ${messageList.length} messages');
+      emit(ChatSuccess(messages: List.from(messageList)));
     });
   }
 }
