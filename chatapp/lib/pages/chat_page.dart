@@ -1,4 +1,3 @@
-import 'package:chatapp/models/message_model.dart';
 import 'package:chatapp/pages/chat_bubble.dart';
 import 'package:chatapp/pages/cubits/chat_cubit/chat_cubit.dart';
 import 'package:flutter/material.dart';

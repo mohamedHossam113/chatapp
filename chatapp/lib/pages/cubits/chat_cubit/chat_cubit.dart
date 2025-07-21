@@ -21,7 +21,6 @@ class ChatCubit extends Cubit<ChatState> {
       });
     } catch (e) {
       // You can log or handle errors here
-      print("Send message error: $e");
     }
   }
 
@@ -34,7 +33,6 @@ class ChatCubit extends Cubit<ChatState> {
       for (var doc in event.docs) {
         messageList.add(MessageModel.fromjson(doc));
       }
-      print('Fetched ${messageList.length} messages');
       emit(ChatSuccess(messages: List.from(messageList)));
     });
   }
